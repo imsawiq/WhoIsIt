@@ -12,11 +12,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(LivingEntityRenderer.class)
 public class LivingEntityRendererMixin {
     @Inject(
-            method = "hasLabel(Lnet/minecraft/entity/LivingEntity;)Z",
+            method = "hasLabel(Lnet/minecraft/entity/LivingEntity;D)Z",
             at = @At("HEAD"),
             cancellable = true
     )
-    private void modifyNametagVisibility(LivingEntity entity, CallbackInfoReturnable<Boolean> cir) {
+    private void whoisit$modifyNametagVisibility(LivingEntity entity, double distance, CallbackInfoReturnable<Boolean> cir) {
         MinecraftClient client = MinecraftClient.getInstance();
 
         if (WhoisitConfig.enabledOwnName && entity == client.cameraEntity) {
