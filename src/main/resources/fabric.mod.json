@@ -5,7 +5,10 @@
   "name": "Who Is It",
   "description": "Shows player nametags.",
   "authors": ["sawiq_"],
-  "contact": {},
+  "contact": {
+    "homepage": "https://modrinth.com/mod/whoisit",
+    "sources": "https://github.com/imsawiq/WhoIsIt"
+  },
   "license": "MPL-2.0",
   "environment": "client",
   "entrypoints": {
