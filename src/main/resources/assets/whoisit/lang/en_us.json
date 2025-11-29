@@ -1,0 +1,8 @@
+{
+  "whoisit.config.title": "Who Is It - Configuration",
+  "whoisit.config.subtitle": "Customize nametag visibility",
+  "whoisit.config.own_name": "Show Own Name",
+  "whoisit.config.other_players": "Show Other Players Names",
+  "whoisit.config.enabled": "Enabled",
+  "whoisit.config.disabled": "Disabled"
+}

@@ -1,0 +1,8 @@
+{
+  "whoisit.config.title": "Who Is It - Налаштування",
+  "whoisit.config.subtitle": "Налаштування видимості нікнеймів",
+  "whoisit.config.own_name": "Показувати свій нік",
+  "whoisit.config.other_players": "Показувати ніки інших гравців",
+  "whoisit.config.enabled": "Увімкнено",
+  "whoisit.config.disabled": "Вимкнено"
+}
