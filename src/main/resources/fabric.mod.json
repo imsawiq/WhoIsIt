@@ -20,8 +20,8 @@
     "whoisit.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.16.4",
-    "minecraft": "~1.21.1",
+    "fabricloader": ">=0.16.14",
+    "minecraft": ">=1.21 <=1.21.1",
     "java": ">=21",
     "fabric-api": "*"
   },
