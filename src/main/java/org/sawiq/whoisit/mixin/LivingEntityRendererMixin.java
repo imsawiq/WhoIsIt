@@ -1,3 +1,5 @@
+package org.sawiq.whoisit.mixin;
+
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
