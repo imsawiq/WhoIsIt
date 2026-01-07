@@ -3,6 +3,7 @@
   "whoisit.config.subtitle": "Настройка видимости ников",
   "whoisit.config.own_name": "Показывать свой ник",
   "whoisit.config.other_players": "Показывать ники других игроков",
+  "whoisit.config.invisible_players": "Показывать ники невидимых",
   "whoisit.config.enabled": "Включено",
   "whoisit.config.disabled": "Выключено"
 }

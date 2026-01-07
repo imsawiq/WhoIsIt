@@ -3,6 +3,7 @@
   "whoisit.config.subtitle": "Customize nametag visibility",
   "whoisit.config.own_name": "Show Own Name",
   "whoisit.config.other_players": "Show Other Players Names",
+  "whoisit.config.invisible_players": "Reveal Invisible Players",
   "whoisit.config.enabled": "Enabled",
   "whoisit.config.disabled": "Disabled"
 }
