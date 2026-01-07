@@ -8,6 +8,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
 public class WhoisitConfigScreen extends Screen {
+
     private final Screen parent;
 
     public WhoisitConfigScreen(Screen parent) {
@@ -40,18 +41,27 @@ public class WhoisitConfigScreen extends Screen {
                 }
         ).dimensions(centerX - 155, startY + 30, 310, 20).build();
 
-        this.addDrawableChild(ButtonWidget.builder(
+        ButtonWidget invisiblePlayersButton = ButtonWidget.builder(
+                this.getButtonText("whoisit.config.invisible_players", WhoisitConfig.revealInvisiblePlayers),
+                button -> {
+                    WhoisitConfig.revealInvisiblePlayers = !WhoisitConfig.revealInvisiblePlayers;
+                    button.setMessage(this.getButtonText("whoisit.config.invisible_players", WhoisitConfig.revealInvisiblePlayers));
+                    WhoisitConfig.save();
+                }
+        ).dimensions(centerX - 155, startY + 60, 310, 20).build();
+
+        ButtonWidget doneButton = ButtonWidget.builder(
                 ScreenTexts.DONE,
                 button -> {
                     WhoisitConfig.save();
-                    if (this.client != null) {
-                        this.client.setScreen(this.parent);
-                    }
+                    if (this.client != null) this.client.setScreen(this.parent);
                 }
-        ).dimensions(centerX - 100, this.height - 28, 200, 20).build());
+        ).dimensions(centerX - 100, this.height - 28, 200, 20).build();
 
         this.addDrawableChild(ownNameButton);
         this.addDrawableChild(otherPlayersButton);
+        this.addDrawableChild(invisiblePlayersButton);
+        this.addDrawableChild(doneButton);
     }
 
     @Override
@@ -80,14 +90,13 @@ public class WhoisitConfigScreen extends Screen {
         Text status = enabled
                 ? Text.translatable("whoisit.config.enabled").formatted(Formatting.GREEN)
                 : Text.translatable("whoisit.config.disabled").formatted(Formatting.RED);
+
         return Text.literal("").append(option).append(": ").append(status);
     }
 
     @Override
     public void close() {
         WhoisitConfig.save();
-        if (this.client != null) {
-            this.client.setScreen(this.parent);
-        }
+        if (this.client != null) this.client.setScreen(this.parent);
     }
 }

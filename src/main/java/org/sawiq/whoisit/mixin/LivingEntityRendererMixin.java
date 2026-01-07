@@ -1,9 +1,9 @@
 package org.sawiq.whoisit.mixin;
 
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.client.render.entity.LivingEntityRenderer;
 import org.sawiq.whoisit.config.WhoisitConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -20,12 +20,21 @@ public class LivingEntityRendererMixin {
     )
     private void whoisit$modifyNametagVisibility(LivingEntity entity, double distance, CallbackInfoReturnable<Boolean> cir) {
         MinecraftClient client = MinecraftClient.getInstance();
-        Entity camera = client.getCameraEntity(); // вместо client.cameraEntity
+        Entity camera = client.getCameraEntity();
+
         if (camera == null) return;
 
         if (WhoisitConfig.enabledOwnName && entity == camera) {
             cir.setReturnValue(MinecraftClient.isHudEnabled());
-        } else if (WhoisitConfig.enabledOtherPlayersName && entity != camera) {
+            return;
+        }
+
+        if (WhoisitConfig.enabledOtherPlayersName && entity != camera) {
+            // Не палим невидимых, если тумблер выключен
+            if (entity.isInvisible() && !WhoisitConfig.revealInvisiblePlayers) {
+                return; // оставляем ванильную логику
+            }
+
             cir.setReturnValue(MinecraftClient.isHudEnabled());
         }
     }
