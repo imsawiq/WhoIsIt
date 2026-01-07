@@ -11,6 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntityRenderer.class)
 public class LivingEntityRendererMixin {
+
     @Inject(
             method = "hasLabel(Lnet/minecraft/entity/LivingEntity;D)Z",
             at = @At("HEAD"),
@@ -21,9 +22,15 @@ public class LivingEntityRendererMixin {
 
         if (WhoisitConfig.enabledOwnName && entity == client.cameraEntity) {
             cir.setReturnValue(MinecraftClient.isHudEnabled());
+            return;
         }
 
         if (WhoisitConfig.enabledOtherPlayersName && entity != client.cameraEntity) {
+            // если сущность невидима и тумблер выключен — не трогаем ванильную логику
+            if (entity.isInvisible() && !WhoisitConfig.revealInvisiblePlayers) {
+                return;
+            }
+
             cir.setReturnValue(MinecraftClient.isHudEnabled());
         }
     }
