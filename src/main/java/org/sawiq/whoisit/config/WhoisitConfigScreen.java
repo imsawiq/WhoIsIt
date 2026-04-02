@@ -1,18 +1,18 @@
 package org.sawiq.whoisit.config;
 
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.screen.ScreenTexts;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.network.chat.Component;
 
 public class WhoisitConfigScreen extends Screen {
 
     private final Screen parent;
 
     public WhoisitConfigScreen(Screen parent) {
-        super(Text.translatable("whoisit.config.title"));
+        super(Component.translatable("whoisit.config.title"));
         this.parent = parent;
     }
 
@@ -23,80 +23,79 @@ public class WhoisitConfigScreen extends Screen {
         int centerX = this.width / 2;
         int startY = this.height / 4;
 
-        ButtonWidget ownNameButton = ButtonWidget.builder(
+        Button ownNameButton = Button.builder(
                 this.getButtonText("whoisit.config.own_name", WhoisitConfig.enabledOwnName),
                 button -> {
                     WhoisitConfig.enabledOwnName = !WhoisitConfig.enabledOwnName;
                     button.setMessage(this.getButtonText("whoisit.config.own_name", WhoisitConfig.enabledOwnName));
                     WhoisitConfig.save();
                 }
-        ).dimensions(centerX - 155, startY, 310, 20).build();
+        ).bounds(centerX - 155, startY, 310, 20).build();
 
-        ButtonWidget otherPlayersButton = ButtonWidget.builder(
+        Button otherPlayersButton = Button.builder(
                 this.getButtonText("whoisit.config.other_players", WhoisitConfig.enabledOtherPlayersName),
                 button -> {
                     WhoisitConfig.enabledOtherPlayersName = !WhoisitConfig.enabledOtherPlayersName;
                     button.setMessage(this.getButtonText("whoisit.config.other_players", WhoisitConfig.enabledOtherPlayersName));
                     WhoisitConfig.save();
                 }
-        ).dimensions(centerX - 155, startY + 30, 310, 20).build();
+        ).bounds(centerX - 155, startY + 30, 310, 20).build();
 
-        ButtonWidget invisiblePlayersButton = ButtonWidget.builder(
+        Button invisiblePlayersButton = Button.builder(
                 this.getButtonText("whoisit.config.invisible_players", WhoisitConfig.revealInvisiblePlayers),
                 button -> {
                     WhoisitConfig.revealInvisiblePlayers = !WhoisitConfig.revealInvisiblePlayers;
                     button.setMessage(this.getButtonText("whoisit.config.invisible_players", WhoisitConfig.revealInvisiblePlayers));
                     WhoisitConfig.save();
                 }
-        ).dimensions(centerX - 155, startY + 60, 310, 20).build();
+        ).bounds(centerX - 155, startY + 60, 310, 20).build();
 
-        ButtonWidget doneButton = ButtonWidget.builder(
-                ScreenTexts.DONE,
-                button -> {
-                    WhoisitConfig.save();
-                    if (this.client != null) this.client.setScreen(this.parent);
-                }
-        ).dimensions(centerX - 100, this.height - 28, 200, 20).build();
+        Button doneButton = Button.builder(
+                CommonComponents.GUI_DONE,
+                button -> this.onClose()
+        ).bounds(centerX - 100, this.height - 28, 200, 20).build();
 
-        this.addDrawableChild(ownNameButton);
-        this.addDrawableChild(otherPlayersButton);
-        this.addDrawableChild(invisiblePlayersButton);
-        this.addDrawableChild(doneButton);
+        this.addRenderableWidget(ownNameButton);
+        this.addRenderableWidget(otherPlayersButton);
+        this.addRenderableWidget(invisiblePlayersButton);
+        this.addRenderableWidget(doneButton);
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        super.render(context, mouseX, mouseY, delta);
+    public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
+        super.extractRenderState(graphics, mouseX, mouseY, delta);
 
-        context.drawCenteredTextWithShadow(
-                this.textRenderer,
+        graphics.centeredText(
+                this.font,
                 this.title,
                 this.width / 2,
                 20,
                 0xFFFFFF
         );
 
-        context.drawCenteredTextWithShadow(
-                this.textRenderer,
-                Text.translatable("whoisit.config.subtitle").formatted(Formatting.GRAY),
+        graphics.centeredText(
+                this.font,
+                Component.translatable("whoisit.config.subtitle").withStyle(ChatFormatting.GRAY),
                 this.width / 2,
                 35,
                 0xAAAAAA
         );
     }
 
-    private Text getButtonText(String key, boolean enabled) {
-        Text option = Text.translatable(key);
-        Text status = enabled
-                ? Text.translatable("whoisit.config.enabled").formatted(Formatting.GREEN)
-                : Text.translatable("whoisit.config.disabled").formatted(Formatting.RED);
+    private Component getButtonText(String key, boolean enabled) {
+        Component option = Component.translatable(key);
+        Component status = enabled
+                ? Component.translatable("whoisit.config.enabled").withStyle(ChatFormatting.GREEN)
+                : Component.translatable("whoisit.config.disabled").withStyle(ChatFormatting.RED);
 
-        return Text.literal("").append(option).append(": ").append(status);
+        return Component.empty().append(option).append(": ").append(status);
     }
 
     @Override
-    public void close() {
+    public void onClose() {
         WhoisitConfig.save();
-        if (this.client != null) this.client.setScreen(this.parent);
+        if (this.minecraft != null) {
+            this.minecraft.setScreen(this.parent);
+        }
     }
 }
