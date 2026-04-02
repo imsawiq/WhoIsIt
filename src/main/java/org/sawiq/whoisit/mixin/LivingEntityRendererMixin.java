@@ -1,9 +1,11 @@
 package org.sawiq.whoisit.mixin;
 
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import org.sawiq.whoisit.config.WhoisitConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -21,8 +23,12 @@ public class LivingEntityRendererMixin {
     private void whoisit$modifyNametagVisibility(LivingEntity entity, double distance, CallbackInfoReturnable<Boolean> cir) {
         MinecraftClient client = MinecraftClient.getInstance();
         Entity camera = client.getCameraEntity();
+        ClientPlayNetworkHandler networkHandler = client.getNetworkHandler();
 
         if (camera == null) return;
+        if (!(entity instanceof PlayerEntity)) return;
+        if (networkHandler == null) return;
+        if (networkHandler.getPlayerListEntry(entity.getUuid()) == null) return;
 
         if (WhoisitConfig.enabledOwnName && entity == camera) {
             cir.setReturnValue(MinecraftClient.isHudEnabled());
