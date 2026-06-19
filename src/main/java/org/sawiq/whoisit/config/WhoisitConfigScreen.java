@@ -95,7 +95,7 @@ public class WhoisitConfigScreen extends Screen {
     public void onClose() {
         WhoisitConfig.save();
         if (this.minecraft != null) {
-            this.minecraft.setScreen(this.parent);
+            this.minecraft.gui.setScreen(this.parent);
         }
     }
 }

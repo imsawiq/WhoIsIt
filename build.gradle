@@ -26,8 +26,8 @@ dependencies {
     // To change the versions see the gradle.properties file
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     implementation "net.fabricmc:fabric-loader:${project.loader_version}"
-    compileOnly "maven.modrinth:modmenu:18.0.0-alpha.8"
-    localRuntime "maven.modrinth:modmenu:18.0.0-alpha.8"
+    compileOnly "maven.modrinth:modmenu:20.0.0-beta.3"
+    localRuntime "maven.modrinth:modmenu:20.0.0-beta.3"
 }
 
 processResources {

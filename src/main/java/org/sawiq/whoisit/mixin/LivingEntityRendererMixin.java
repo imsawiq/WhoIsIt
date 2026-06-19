@@ -31,7 +31,7 @@ public class LivingEntityRendererMixin {
         if (connection.getPlayerInfo(entity.getUUID()) == null) return;
 
         if (WhoisitConfig.enabledOwnName && entity == camera) {
-            cir.setReturnValue(Minecraft.renderNames());
+            cir.setReturnValue(!client.gui.hud.isHidden());
             return;
         }
 
@@ -41,7 +41,7 @@ public class LivingEntityRendererMixin {
                 return; // оставляем ванильную логику
             }
 
-            cir.setReturnValue(Minecraft.renderNames());
+            cir.setReturnValue(!client.gui.hud.isHidden());
         }
     }
 }
